@@ -1,0 +1,56 @@
+
+.modal-mask{
+    position: fixed;
+    top:0;
+    bottom:0;
+    right:0;
+    left:0;
+    background-color: rgba(0,0,0,.45);
+    height:100%;
+}
+.upload-modal{
+    min-height:300px;
+    min-width:300px;
+    width:500px;
+    box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
+    background: #fff;
+    color: rgba(0,0,0,.87);
+}
+.upload-modal-header{
+    position: relative;
+    height:50px;
+    border-bottom: 1px solid #ddd;
+    line-height: 50px;
+    cursor: default;
+    padding-left: 10px;
+}
+.drag-handler{
+    height: 100%;
+    
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.close-btn{
+    position: absolute;
+    right:0;
+    top: 0;
+    z-index: 100;
+}
+.upload-modal-inner-wrapper{
+    height: 100%; 
+    overflow: auto;
+    overflow-x:hidden;
+}
+.upload-trigger{
+    height: 210px;
+    width:calc( 100% - 80px );
+    margin:0 auto;
+    background: #ddd;
+}
+.progress-area{
+    min-height: 100px;
+    font-size: 12px;
+}

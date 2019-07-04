@@ -1,0 +1,19 @@
+<div class="progress-wrapper">
+  <div class="progress-info">
+    {{progressInfo.name}}
+  </div>
+  <div class="progress-content">
+    <mat-progress-bar 
+    [value]="progressValue"
+    (animationEnd)="fireFinishInfo()" 
+    mode="determinate"></mat-progress-bar>
+  </div>
+  <div class="operate-btns">
+    <button (click)="trigger()">
+      <ng-container *ngIf="showPause">pause</ng-container>
+      <ng-container *ngIf="!showPause">resume</ng-container>
+    </button>
+    <button (click)="cancelTask()">close</button> 
+  </div>
+</div>
+

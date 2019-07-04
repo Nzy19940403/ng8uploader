@@ -1,0 +1,80 @@
+
+  <div  
+  [ngClass]="maskAnimationClassMap"
+  [@changeBg]="maskAnimationState"
+  (click)="onClickOkCancel('cancel')"
+  *ngIf="showMask" 
+  [style.zIndex]="gjZIndex" 
+  class="modal-mask"></div> 
+
+  <div 
+  resize
+  (emitAfterResize)="emitAfterResize($event)"
+  #modalContainer
+  [ngClass]="modalAnimationClassMap"
+  [minWidth]="300"
+  [minHeight]="300"
+  class="upload-modal" 
+  [style.zIndex]="gjZIndex+1">
+    <div class="upload-modal-inner-wrapper">
+      <div class="upload-modal-header" onselectstart = "return false" >
+        {{gjTitle}}
+        <div 
+        *ngIf="useDragHandler" 
+        class="drag-handler"
+        dragHandle></div>
+        <button mat-icon-button (click)="onClickOkCancel('cancel')" class="close-btn">
+          关
+        </button> 
+      </div>  
+
+      <input type="file" (change)="getpickedFileByClick()" #pickerControl multiple style="display: none;"> 
+      <div 
+      #dropzone
+      class="upload-trigger" 
+      (drop)="handleDrop($event)"
+      (click)="triggerUploadByClick()">
+      </div>
+      
+
+      <div 
+      class="progress-area"
+      *ngIf="showProgressAfterInit">
+
+        <mat-tab-group 
+        #tabGroup
+        mat-align-tabs="center">
+          <mat-tab label="正在上传列表">
+            <div
+            style="margin-bottom:10px;"
+            *ngFor="let item of progressList">
+              <!-- <mat-progress-bar 
+              (animationEnd)="handleSingleTaskFinish(item)" 
+              mode="determinate" [value]="item.progress"></mat-progress-bar> -->
+              <app-upload-progress
+              [progressInfo]="item"
+              [progressValue]="item.progress" 
+              (emitWhenFinish)="handleSingleTaskFinish($event)"
+              (emitWhenCancel)="handleCancelFromProgress($event)"
+              (emitWhenTrigger)="handleTriggerFromProgress($event)"></app-upload-progress> 
+            </div>
+          </mat-tab>
+          <mat-tab label="上传成功列表">
+            <div *ngFor="let item of finishedList">
+              {{item.name}} √
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+
+        
+        
+      </div>
+      <div *ngIf="!autoUpload">
+        <button mat-button (click)="doupload()">开始上传</button>
+      </div>
+    </div>
+    
+  </div>
+  
+
+  

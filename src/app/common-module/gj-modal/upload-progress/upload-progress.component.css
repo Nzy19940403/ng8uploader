@@ -1,0 +1,32 @@
+.progress-wrapper{
+    /* padding:10px 0px; */
+    display: flex;
+    flex-direction: row;
+    height:30px;
+}
+.progress-info{
+    flex-shrink: 0;
+    width:120px;
+    height: 30px;
+    font-size: 12px;
+    line-height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis ;
+    white-space:nowrap;
+}   
+.progress-content{
+    flex-shrink: 0;
+    flex-grow: 1;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.operate-btns{
+    flex-shrink: 0;
+    width:100px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    
+}
