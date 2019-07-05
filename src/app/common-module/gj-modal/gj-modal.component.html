@@ -12,9 +12,13 @@
   (emitAfterResize)="emitAfterResize($event)"
   #modalContainer
   [ngClass]="modalAnimationClassMap"
-  [minWidth]="300"
-  [minHeight]="300"
+  [minWidth]="minModalWidth"
+  [minHeight]="minModalHeight"
   class="upload-modal" 
+  [style.height]="minModalHeight+'px'"
+  [style.width]="minModalWidth+'px'"
+
+
   [style.zIndex]="gjZIndex+1">
     <div class="upload-modal-inner-wrapper">
       <div class="upload-modal-header" onselectstart = "return false" >

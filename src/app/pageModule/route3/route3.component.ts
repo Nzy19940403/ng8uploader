@@ -19,6 +19,11 @@ export class Route3Component implements OnInit {
       uploaderInfo:{
         target:'mail'
       },
+      showMask:false
+      // doAfterSingleTaskUploaded:(data)=>{
+      //   debugger
+      //   console.log(data)
+      // }
     })
 
   }

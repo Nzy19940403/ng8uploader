@@ -205,11 +205,15 @@ export class ResizeComponent implements OnInit {
 
   renderWithMove(xval, yval) {
     if (this.currentActiveDirection == 'right') {
-    
-      this.renderer.setStyle(this.el.nativeElement, 'width', this.oldwidth + xval + 'px')
+     
+      if(this.oldwidth+xval>this.minWidth){
+        this.renderer.setStyle(this.el.nativeElement, 'width', this.oldwidth + xval + 'px')
+      }
+      
     } else if (this.currentActiveDirection == 'left') {
      
       if (this.oldleft + xval < this.oldleft + this.oldwidth - this.minWidth) {
+        
         this.renderer.setStyle(this.el.nativeElement, 'width', this.oldwidth - xval + 'px')
         this.renderer.setStyle(this.el.nativeElement, 'left', this.oldleft + xval + 'px')
       }
@@ -228,7 +232,10 @@ export class ResizeComponent implements OnInit {
       // }
       // console.log(this.oldtop + yval )
       // console.log(this.oldheight + this.oldtop - this.minHeight)
-      this.renderer.setStyle(this.el.nativeElement, 'height', this.oldheight + yval + 'px')
+      if(this.oldheight+yval>this.minHeight){
+        this.renderer.setStyle(this.el.nativeElement, 'height', this.oldheight + yval + 'px')
+      }
+      
     }else if(this.currentActiveDirection == 'topright'){
       //右上角
       if (this.oldtop + yval < this.oldheight + this.oldtop - this.minHeight) {
@@ -247,15 +254,18 @@ export class ResizeComponent implements OnInit {
       }
     }else if(this.currentActiveDirection == 'bottomleft'){
       //左下角
-      if (this.oldleft + xval < this.oldleft + this.oldwidth-this.minWidth) {
+      if (this.oldleft + xval < this.oldleft + this.oldwidth-this.minWidth && this.oldheight+yval>this.minHeight) {
         this.renderer.setStyle(this.el.nativeElement, 'width', this.oldwidth - xval + 'px')
         this.renderer.setStyle(this.el.nativeElement, 'left', this.oldleft + xval + 'px')
         this.renderer.setStyle(this.el.nativeElement, 'height', this.oldheight + yval + 'px')
       }
     }else if(this.currentActiveDirection == 'bottomright'){
       //右下角
-      this.renderer.setStyle(this.el.nativeElement, 'width', this.oldwidth + xval + 'px')
-      this.renderer.setStyle(this.el.nativeElement, 'height', this.oldheight + yval + 'px')
+      if(this.oldwidth+xval>this.minWidth&&this.oldheight+yval>this.minHeight){
+        this.renderer.setStyle(this.el.nativeElement, 'width', this.oldwidth + xval + 'px')
+        this.renderer.setStyle(this.el.nativeElement, 'height', this.oldheight + yval + 'px')
+      }
+      
     }
 
 

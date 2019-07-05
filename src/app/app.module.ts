@@ -16,6 +16,7 @@ import { GjModalModule } from './common-module/gj-modal/gj-modal.module'
 import { ResizeComponent } from './common-module/resize/resize.component';
 import { Route3Component } from './pageModule/route3/route3.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +32,7 @@ import { Route3Component } from './pageModule/route3/route3.component';
     CommonModuleModule,
     // ChatModule,
     ChartsModule,
+    
 
   ],
   providers: [

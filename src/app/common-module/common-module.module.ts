@@ -5,10 +5,11 @@ import { ResizeComponent } from './resize/resize.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GjModalModule } from './gj-modal/gj-modal.module';
+import { NDragComponent } from './ndrag/ndrag.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [NDragComponent],
   imports: [
     CommonModule,
     ChatModule,
@@ -17,7 +18,8 @@ import { GjModalModule } from './gj-modal/gj-modal.module';
   exports:[
     ResizeComponent,
     ChatModalComponent,
-    GjModalComponent
+    GjModalComponent,
+    NDragComponent
   ]
 })
 export class CommonModuleModule { }

@@ -15,9 +15,13 @@ export interface ModalOptions<T = any,R = any>{
     gjTitle?:string|TemplateRef<{}>;
     gjFooter?:string|TemplateRef<{}>|null;
     
+    minModalHeight?:number;
+    minModalWidth?:number;
 
     uploaderInfo?:any;
     autoUpload?:boolean;
+    doAfterSingleTaskUploaded?:EventEmitter<T> | OnclickCallback<T>;
+
     //预设的ok和cancel按钮
     gjOkText?:string | null;
     gjOnOk?:EventEmitter<T> | OnclickCallback<T>;
@@ -27,5 +31,7 @@ export interface ModalOptions<T = any,R = any>{
 
 export interface ModalOptionsForService<T = any> extends ModalOptions<T>{
     gjOnOk?:OnclickCallback<T>;
-    gjOnCancel?:OnclickCallback<T>
+    gjOnCancel?:OnclickCallback<T>;
+    doAfterSingleTaskUploaded?:EventEmitter<T> | OnclickCallback<T>;
 }
+

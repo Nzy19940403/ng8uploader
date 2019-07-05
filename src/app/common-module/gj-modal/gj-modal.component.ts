@@ -33,6 +33,8 @@ implements OnInit,AfterViewInit ,OnDestroy,ModalOptions{
 
   @Input() @Output() readonly gjOnOk:EventEmitter<T> | OnclickCallback<T> = new EventEmitter<T>()
   @Input() @Output() readonly gjOnCancel:EventEmitter<T> | OnclickCallback<T> = new EventEmitter<T>()
+  @Input() @Output() readonly doAfterSingleTaskUploaded :EventEmitter<T> | OnclickCallback<T> = new EventEmitter<T>() 
+
 
   @Input() @InputBoolean() gjVisible:boolean = false
   @Input() @InputBoolean() gjNoAnimation = false;
@@ -42,6 +44,8 @@ implements OnInit,AfterViewInit ,OnDestroy,ModalOptions{
   @Input() showMask:boolean = true
   @Input() uploaderInfo:any
   @Input() autoUpload:boolean = true
+  @Input() minModalHeight:number = 400
+  @Input() minModalWidth:number = 600
   // @Output() gjVisibleChange = new EventEmitter()
   // @Input() @twBind('gjVisibleChange',coerceBooleanProperty) gjVisible:boolean = false
 
@@ -99,6 +103,7 @@ implements OnInit,AfterViewInit ,OnDestroy,ModalOptions{
     this.initProgressListObservable()
     this.initDropzone()
     this.uploader.autoUpload = this.autoUpload
+   
 
   }
 
@@ -153,15 +158,22 @@ implements OnInit,AfterViewInit ,OnDestroy,ModalOptions{
 
   setOverlayRef(overlayRef:OverlayRef){
     this.overlayRef = overlayRef
+   
+    // this.renderer.setStyle(this.elementRef.nativeElement,'width', this.minModalWidth + 'px')
+    // this.renderer.setStyle(this.elementRef.nativeElement,'height', this.minModalHeight + 'px')
+
+   
   }
   setPosition(){   
     //设置位置 居中显示 
+   
     this.renderer.setStyle(this.elementRef.nativeElement, 'position', 'absolute')
-    this.renderer.setStyle(this.elementRef.nativeElement,'left', (this.document.children[0].clientWidth - this.elementRef.nativeElement.clientWidth)/2 + 'px')
-    this.renderer.setStyle(this.elementRef.nativeElement,'top', (this.document.children[0].clientHeight - this.elementRef.nativeElement.clientHeight)/2 + 'px')
+    this.renderer.setStyle(this.elementRef.nativeElement,'left', (this.document.children[0].clientWidth - this.minModalWidth)/2 + 'px')
+    this.renderer.setStyle(this.elementRef.nativeElement,'top', (this.document.children[0].clientHeight - this.minModalHeight)/2 + 'px')
   }
   open():void{
     // this.gjVisible = true
+    
     this.setPosition()
     this.changeVisibleFromInside(true)
   }
@@ -305,12 +317,27 @@ implements OnInit,AfterViewInit ,OnDestroy,ModalOptions{
     }
   }
   postAfterUploader(data){
-    this.uploader.postAfterUploader(data)
-    .subscribe(
-      res=>{
-        console.log(res)
-      }
-    )
+    if(this.doAfterSingleTaskUploaded instanceof EventEmitter){
+    
+      this.uploader.postAfterUploader(data)
+      .subscribe(
+        res=>{
+          console.log(res)
+        }
+      )
+      this.doAfterSingleTaskUploaded.emit(data)
+    }else if(typeof this.doAfterSingleTaskUploaded === 'function'){
+     
+      this.doAfterSingleTaskUploaded(data)
+    }else{
+      this.uploader.postAfterUploader(data)
+      .subscribe(
+        res=>{
+          console.log(res)
+        }
+      )
+    }
+      
   }
   triggerUploadByClick(){
     this.pickerControl.nativeElement.click()
@@ -355,7 +382,7 @@ implements OnInit,AfterViewInit ,OnDestroy,ModalOptions{
 
 
 
-// ////////////////////////////
+//////////////////////////////
 function preventDefaultEvent(e){
   e.preventDefault()
 }
