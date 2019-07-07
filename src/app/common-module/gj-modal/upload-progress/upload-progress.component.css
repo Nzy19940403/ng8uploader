@@ -24,7 +24,7 @@
 }
 .operate-btns{
     flex-shrink: 0;
-    width:100px;
+    /* width:100px; */
     height: 100%;
     display: flex;
     align-items: center;

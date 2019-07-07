@@ -10,10 +10,10 @@
   </div>
   <div class="operate-btns">
     <button (click)="trigger()">
-      <ng-container *ngIf="showPause">pause</ng-container>
+      <ng-container *ngIf="showPause"><span class="iconfont icon-pause"></span></ng-container>
       <ng-container *ngIf="!showPause">resume</ng-container>
     </button>
-    <button (click)="cancelTask()">close</button> 
+    <button (click)="cancelTask()"><span class="iconfont icon-shanchu"></span></button> 
   </div>
 </div>
 

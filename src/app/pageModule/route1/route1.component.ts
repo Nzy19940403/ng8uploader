@@ -5,7 +5,7 @@ import { delay, tap } from 'rxjs/operators';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import * as pluginDataLbels from 'chartjs-plugin-datalabels' 
 import {Label} from 'ng2-charts'
-
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-route1',
   templateUrl: './route1.component.html',
@@ -35,7 +35,8 @@ export class Route1Component implements OnInit {
   ]
 
   constructor(
-    private uploadModal:GjModalService
+    private uploadModal:GjModalService,
+    private http:HttpClient
   ) { }
 
   ngOnInit() {
@@ -44,7 +45,7 @@ export class Route1Component implements OnInit {
         console.log('T')
       }
     }
-
+    this.getData()
    
   }
   changeState(){
@@ -56,7 +57,9 @@ export class Route1Component implements OnInit {
       delay(2000),
     )
   }
-
+  getData(){
+    this.http.get("http://localhost:5000/getflag?flag=1")
+  }
   openwin(){
     this.uploadModal.create({
       uploaderInfo:{

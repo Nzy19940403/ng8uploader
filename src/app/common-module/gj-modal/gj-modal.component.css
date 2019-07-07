@@ -50,7 +50,7 @@
     height: 210px;
     width:calc( 100% - 80px );
     margin:0 auto;
-    background: #ddd;
+    /* background: #ddd; */
 }
 .progress-area{
     min-height: 100px;
