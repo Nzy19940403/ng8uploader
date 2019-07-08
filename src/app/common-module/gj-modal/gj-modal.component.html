@@ -31,7 +31,7 @@
         class="drag-handler"
         dragHandle></div>
         <button mat-icon-button (click)="onClickOkCancel('cancel')" class="close-btn">
-          关
+          <span class="iconfont icon-close upload-close"></span>
         </button> 
       </div>  
 
@@ -41,6 +41,10 @@
       class="upload-trigger" 
       (drop)="handleDrop($event)"
       (click)="triggerUploadByClick()">
+      <div>
+        <div class="upload-logo"><span class="iconfont icon-upload"></span></div>
+        <p class="upload-desc">点击或将文件拖拽到这里上传</p>
+      </div>
       </div>
       
 
@@ -67,8 +71,8 @@
             </div>
           </mat-tab>
           <mat-tab label="上传成功列表">
-            <div *ngFor="let item of finishedList">
-              {{item.name}} √
+            <div *ngFor="let item of finishedList" class="upload-finished">
+              {{item.name}} <span class="iconfont icon-wancheng upload-finished-icon"></span>
             </div>
           </mat-tab>
         </mat-tab-group>

@@ -1,0 +1,39 @@
+.upload-close{
+  font-size: 20px;
+}
+.upload-modal-header{
+  margin-bottom: 10px;
+}
+.upload-trigger{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #657180;
+  border: 1px dashed #657180;
+}
+.upload-logo{
+  text-align: center;
+}
+.upload-logo span{
+  font-size: 45px;
+}
+.upload-desc{
+  /* text-align: center; */
+}
+.operate-btns button{
+  background-color: transparent;
+  border: 0;
+}
+.progress-wrapper{
+  padding: 0 30px;
+}
+.upload-finished{
+  padding: 0 30px;
+  margin: 5px;
+}
+.mat-progress-bar{
+  border-radius: 5px;
+}
+.upload-finished-icon{
+  float: right;
+}
