@@ -15,6 +15,7 @@ import {ChartsModule} from 'ng2-charts';
 import { GjModalModule } from './common-module/gj-modal/gj-modal.module'
 import { ResizeComponent } from './common-module/resize/resize.component';
 import { Route3Component } from './pageModule/route3/route3.component';
+import { Route4Component } from './pageModule/route4/route4.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { Route3Component } from './pageModule/route3/route3.component';
     Route1Component,
     Route2Component,
     Route3Component,
+    Route4Component,
 
   ],
   imports: [

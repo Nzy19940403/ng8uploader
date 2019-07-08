@@ -1,0 +1,10 @@
+.mail{
+    height:100px;
+    width:100px;
+    background: #eee;
+    display: inline-block;
+    border-radius: 50%;
+    line-height: 100px;
+    text-align: center;
+    
+}

@@ -9,7 +9,9 @@ export class Route1Permission{
    
     return component.getState().pipe(
       map(
-        (res:number)=>{
+        (res:any)=>{
+       
+          // return !res
           console.log(res)
           if(res%2){
             return true

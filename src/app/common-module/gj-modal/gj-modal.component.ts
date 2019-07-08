@@ -2,7 +2,7 @@ import { UploadService } from './../upload/upload.service';
 import { element } from 'protractor';
 import { WiredButton } from 'wired-elements';
 import { ModalOptions, OnclickCallback } from './gjModal.type';
-import { Component, OnInit, Output, Input, EventEmitter, ComponentRef, ElementRef, ViewChild, Inject, TemplateRef, Renderer2, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, ComponentRef, ElementRef, ViewChild, Inject, TemplateRef, Renderer2, AfterViewInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { InputBoolean } from '../mycore/transType';
 import { twBind } from '../mycore/twBind';
 import {coerceBooleanProperty} from '@angular/cdk/coercion'
@@ -28,9 +28,9 @@ export const MODAL_ANIMATE_DURATION = 200; // Duration when perform animations (
   ]
 })
 export class GjModalComponent<T = any,R = any> extends GjModalRef
-implements OnInit,AfterViewInit ,OnDestroy,ModalOptions{
+implements OnChanges,OnInit,AfterViewInit ,OnDestroy,ModalOptions{
  
-
+  
   @Input() @Output() readonly gjOnOk:EventEmitter<T> | OnclickCallback<T> = new EventEmitter<T>()
   @Input() @Output() readonly gjOnCancel:EventEmitter<T> | OnclickCallback<T> = new EventEmitter<T>()
   @Input() @Output() readonly doAfterSingleTaskUploaded :EventEmitter<T> | OnclickCallback<T> = new EventEmitter<T>() 
@@ -99,11 +99,18 @@ implements OnInit,AfterViewInit ,OnDestroy,ModalOptions{
   get afterOpen():Observable<void>{
     return this.gjAfterOpen.asObservable()
   }
+  ngOnChanges(changes:SimpleChanges):void{
+    if(changes.gjVisible){
+   
+      this.handleVisibleStateChange(this.gjVisible,!changes.gjVisible.firstChange)
+    }
+  }
   ngOnInit() {
     this.initProgressListObservable()
     this.initDropzone()
     this.uploader.autoUpload = this.autoUpload
    
+    this.container
 
   }
 
@@ -192,6 +199,7 @@ implements OnInit,AfterViewInit ,OnDestroy,ModalOptions{
   }
 
   handleVisibleStateChange(visible:boolean,animation:boolean = true,closeResult?:R):Promise<void>{
+    
     if(visible){
       this.scrollStrategy.enable()
       
@@ -199,6 +207,7 @@ implements OnInit,AfterViewInit ,OnDestroy,ModalOptions{
         this.overlayKeyboardDispatcher.add(this.overlayRef)
       }
     }else{
+ 
       if(this.container instanceof OverlayRef){
         this.overlayKeyboardDispatcher.remove(this.overlayRef)
       }
@@ -210,7 +219,6 @@ implements OnInit,AfterViewInit ,OnDestroy,ModalOptions{
       }else{
         this.gjAfterClose.emit(closeResult)
         this.scrollStrategy.disable()
-
       }
     })
      
@@ -260,6 +268,12 @@ implements OnInit,AfterViewInit ,OnDestroy,ModalOptions{
     this.renderer.setStyle(t,'left', t.offsetLeft+data/2 + 'px')
    
   }
+  isNonEmptyString(value:{}):boolean {
+    return typeof value === 'string' && value !== ''
+  }
+  isTemplateRef(value:{}):boolean {
+    return value instanceof TemplateRef
+  }
 
 
 
@@ -275,7 +289,6 @@ implements OnInit,AfterViewInit ,OnDestroy,ModalOptions{
     this.progressListObservable$= t.subscribe(
       res=>{
         this.progressList.push(res)
-       
       }
     )
   }
@@ -350,9 +363,7 @@ implements OnInit,AfterViewInit ,OnDestroy,ModalOptions{
     this.initOwnProgress(t)
   }
   initDropzone(){
-
     // this.uploader.uploader.assignDrop(this.dropzone.nativeElement) 
-
     this.dropzone.nativeElement.addEventListener('dragover',preventDefaultEvent,false)
     this.dropzone.nativeElement.addEventListener('drop',preventDefaultEvent,false)
   }

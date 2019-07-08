@@ -11,8 +11,13 @@ export class route2permission {
     route:ActivatedRouteSnapshot,
     http:HttpClient
   ):Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree{
- 
     return true
+    // return  new Promise((reslove,reject)=>{
+    //   setTimeout(()=>{
+    //     return true
+    //   })
+    // })
+    
   }
 }
 

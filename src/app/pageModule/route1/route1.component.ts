@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { GjModalService } from './../../common-module/gj-modal/gj-modal.service';
 import { Component, OnInit } from '@angular/core';
 import { of } from 'rxjs';
@@ -35,7 +36,8 @@ export class Route1Component implements OnInit {
   ]
 
   constructor(
-    private uploadModal:GjModalService
+    private uploadModal:GjModalService,
+    private http:HttpClient
   ) { }
 
   ngOnInit() {
@@ -55,6 +57,7 @@ export class Route1Component implements OnInit {
     return of(this.state).pipe(
       delay(2000),
     )
+    // return this.http.get('http://192.168.50.18:8000/getflag/')
   }
 
   openwin(){

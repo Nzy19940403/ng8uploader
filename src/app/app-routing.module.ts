@@ -1,3 +1,4 @@
+import { Route4Component } from './pageModule/route4/route4.component';
 import { Route2authService } from './pageModule/route2/route2auth.service';
 import { AppserviceService } from './appservice/appservice.service';
 import { Route2Component } from './pageModule/route2/route2.component';
@@ -20,7 +21,10 @@ const routes: Routes = [
   {
     path:'3',
     component:Route3Component,
- 
+  },
+  {
+    path:'4',
+    component:Route4Component
   }
 ];
 

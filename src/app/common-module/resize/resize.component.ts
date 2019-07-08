@@ -20,6 +20,7 @@ export class ResizeComponent implements OnInit {
 
   @Input() minWidth:number = 0
   @Input() minHeight:number = 0
+  @Input() attach:boolean = false //是否允许attach到边缘
 
   @Output() emitAfterResize = new EventEmitter()
 
@@ -30,11 +31,11 @@ export class ResizeComponent implements OnInit {
   handleRender: string[] = []
   isresizing: boolean = false
   currentActiveDirection: string = ''
-  oldcoor: object = {
+  oldcoor: object = { //resize相关
     x: null,
     y: null
   }
-  newcoor: object = {
+  newcoor: object = {//resize相关
     x: null,
     y: null
   }
@@ -44,11 +45,11 @@ export class ResizeComponent implements OnInit {
   oldtop: any
 
   ismoving: boolean = false
-  oldmovecoor:object={
+  oldmovecoor:object={//move相关
     x:null,
     y:null
   }
-  newmovecoor:object={
+  newmovecoor:object={//move相关
     x:null,
     y:null
   }
@@ -67,11 +68,15 @@ export class ResizeComponent implements OnInit {
     if(this.allowMove){
       this.bindMovble()
     }
-   
+    if(this.attach){
+      this.checkAttached()
+    }
 
     this.renderer.setStyle(this.el.nativeElement, 'position', 'absolute')
 
   }
+ 
+  
   bindMovble() {
     //在此确定draghArea的位置
 
@@ -93,6 +98,10 @@ export class ResizeComponent implements OnInit {
     e.preventDefault()
     if(this.isresizing)return
 
+    // if(this.attach){
+    //   this.renderer.removeClass(this.el.nativeElement,'attached')
+    // }
+
     this.ismoving = true
     let moveFunc;
     this.oldmovecoor={
@@ -106,7 +115,11 @@ export class ResizeComponent implements OnInit {
   
 
     this.document.addEventListener('mousemove', moveFunc = e => {
-     
+      if(this.attach){
+        this.clearAttachedClass()
+        
+      }
+
       if(this.ismoving){
         this.newmovecoor={
           x:e.pageX,
@@ -124,13 +137,69 @@ export class ResizeComponent implements OnInit {
       
       if(this.ismoving){
         this.ismoving = false
+
+        if(this.attach){
+          this.checkAttached()    
      
+        }
+        
         this.document.removeEventListener('mousemove', moveFunc);
       }
   
     }, { once: true });
   }
+  clearAttachedClass(){
+    this.renderer.removeClass(this.el.nativeElement,'attached')
+    this.renderer.removeClass(this.el.nativeElement,'top')
+    this.renderer.removeClass(this.el.nativeElement,'left')
+    this.renderer.removeClass(this.el.nativeElement,'right')
+    this.renderer.removeClass(this.el.nativeElement,'bottom')
+  }
+  checkAttached(){
 
+
+    if(this.el.nativeElement.offsetTop<30){
+      //判断左右 左右优先
+      if(this.el.nativeElement.offsetLeft<30){
+        this.renderer.addClass(this.el.nativeElement,'left')
+        this.renderer.setStyle(this.el.nativeElement,'left','0px')
+      }else if(this.document.documentElement.clientWidth - this.el.nativeElement.offsetLeft<this.el.nativeElement.clientWidth+30){
+        this.renderer.addClass(this.el.nativeElement,'right')
+        this.renderer.setStyle(this.el.nativeElement,'left',this.document.documentElement.clientWidth-this.el.nativeElement.clientWidth+'px')
+      }else{
+        this.renderer.addClass(this.el.nativeElement,'top')
+        this.renderer.setStyle(this.el.nativeElement,'top','0px')
+      }
+
+      this.renderer.addClass(this.el.nativeElement,'attached')
+
+    }else if(this.document.documentElement.clientHeight-this.el.nativeElement.offsetTop<this.el.nativeElement.clientHeight+30){
+      //判断左右 左右优先
+      if(this.el.nativeElement.offsetLeft<30){
+        this.renderer.addClass(this.el.nativeElement,'left')
+        this.renderer.setStyle(this.el.nativeElement,'left','0px')
+      }else if(this.document.documentElement.clientWidth - this.el.nativeElement.offsetLeft<this.el.nativeElement.clientWidth+30){
+        this.renderer.addClass(this.el.nativeElement,'right')
+        this.renderer.setStyle(this.el.nativeElement,'left',this.document.documentElement.clientWidth-this.el.nativeElement.clientWidth+'px')
+      }else{
+        this.renderer.addClass(this.el.nativeElement,'bottom')
+        this.renderer.setStyle(this.el.nativeElement,'top',this.document.documentElement.clientHeight-this.el.nativeElement.clientHeight+'px')
+      }
+      this.renderer.addClass(this.el.nativeElement,'attached')
+    }else{
+      if(this.el.nativeElement.offsetLeft<30){
+        this.renderer.addClass(this.el.nativeElement,'left')
+        this.renderer.setStyle(this.el.nativeElement,'left','0px')
+        this.renderer.addClass(this.el.nativeElement,'attached')
+      }else if(this.document.documentElement.clientWidth - this.el.nativeElement.offsetLeft<this.el.nativeElement.clientWidth+30){
+        this.renderer.addClass(this.el.nativeElement,'right')
+        this.renderer.setStyle(this.el.nativeElement,'left',this.document.documentElement.clientWidth-this.el.nativeElement.clientWidth+'px')
+        this.renderer.addClass(this.el.nativeElement,'attached')
+      }
+
+    }
+    
+  }
 
   checkHandleRender() {
     if (this.childresize) return
@@ -238,31 +307,49 @@ export class ResizeComponent implements OnInit {
       
     }else if(this.currentActiveDirection == 'topright'){
       //右上角
-      if (this.oldtop + yval < this.oldheight + this.oldtop - this.minHeight) {
-        this.renderer.setStyle(this.el.nativeElement, 'height', this.oldheight - yval + 'px')
-        this.renderer.setStyle(this.el.nativeElement, 'top', this.oldtop + yval + 'px')
-        this.renderer.setStyle(this.el.nativeElement, 'width', this.oldwidth + xval + 'px')
+      if (this.oldtop + yval < this.oldheight + this.oldtop ) {
+        if(this.oldheight-yval>this.minHeight){
+          this.renderer.setStyle(this.el.nativeElement, 'height', this.oldheight - yval + 'px')
+          this.renderer.setStyle(this.el.nativeElement, 'top', this.oldtop + yval + 'px')
+        }
+        if(this.oldwidth + xval>this.minWidth){
+          this.renderer.setStyle(this.el.nativeElement, 'width', this.oldwidth + xval + 'px')
+        }
+        
       }
       
     }else if(this.currentActiveDirection == 'topleft'){
       //左上角
-      if (this.oldtop + yval < this.oldheight + this.oldtop - this.minHeight && this.oldleft + xval < this.oldleft + this.oldwidth - this.minWidth) {
-        this.renderer.setStyle(this.el.nativeElement, 'height', this.oldheight - yval + 'px')
-        this.renderer.setStyle(this.el.nativeElement, 'top', this.oldtop + yval + 'px')
-        this.renderer.setStyle(this.el.nativeElement, 'width', this.oldwidth - xval + 'px')
-        this.renderer.setStyle(this.el.nativeElement, 'left', this.oldleft + xval + 'px')
+      if (this.oldtop + yval < this.oldheight + this.oldtop  && this.oldleft + xval < this.oldleft + this.oldwidth ) {
+        if(this.oldheight-yval>this.minHeight){
+          this.renderer.setStyle(this.el.nativeElement, 'height', this.oldheight - yval + 'px')
+          this.renderer.setStyle(this.el.nativeElement, 'top', this.oldtop + yval + 'px')
+        }
+        if(this.oldwidth - xval>this.minWidth){
+          this.renderer.setStyle(this.el.nativeElement, 'width', this.oldwidth - xval + 'px')
+          this.renderer.setStyle(this.el.nativeElement, 'left', this.oldleft + xval + 'px')
+        }
+        
+        
       }
     }else if(this.currentActiveDirection == 'bottomleft'){
       //左下角
-      if (this.oldleft + xval < this.oldleft + this.oldwidth-this.minWidth && this.oldheight+yval>this.minHeight) {
-        this.renderer.setStyle(this.el.nativeElement, 'width', this.oldwidth - xval + 'px')
-        this.renderer.setStyle(this.el.nativeElement, 'left', this.oldleft + xval + 'px')
-        this.renderer.setStyle(this.el.nativeElement, 'height', this.oldheight + yval + 'px')
+      if (this.oldleft + xval < this.oldleft + this.oldwidth) {
+        if(this.oldwidth - xval>this.minWidth){
+          this.renderer.setStyle(this.el.nativeElement, 'width', this.oldwidth - xval + 'px')
+          this.renderer.setStyle(this.el.nativeElement, 'left', this.oldleft + xval + 'px')
+        }
+        if(this.oldheight+yval>this.minHeight){
+          this.renderer.setStyle(this.el.nativeElement, 'height', this.oldheight + yval + 'px')
+        }
+        
       }
     }else if(this.currentActiveDirection == 'bottomright'){
       //右下角
-      if(this.oldwidth+xval>this.minWidth&&this.oldheight+yval>this.minHeight){
+      if(this.oldwidth+xval>this.minWidth){  
         this.renderer.setStyle(this.el.nativeElement, 'width', this.oldwidth + xval + 'px')
+      }
+      if(this.oldheight+yval>this.minHeight){
         this.renderer.setStyle(this.el.nativeElement, 'height', this.oldheight + yval + 'px')
       }
       

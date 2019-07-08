@@ -3,4 +3,29 @@
 html,body{
     padding:0px;
     margin:0px;
+    overflow: hidden;
+    height: 100%;
+}
+.attached{
+    /* transition: translateX(20px) .3s ease-in-out !important; */
+    transition: transform .3s ease-in-out;
+    
+}
+.attached.left{
+    transform: translateX(-40px) ;
+}
+.attached.right{
+    transform: translateX(40px) ;
+}
+.attached.top{
+    transform: translateY(-40px) ;
+}
+.attached.bottom{
+    transform: translateY(40px) ;
+}
+.attached:hover{
+    /* transition: translateX(20px) .3s ease-in-out !important; */
+    transform: translateX(0px) ;
+    transform: translateY(0px) ;
+    /* transition: transform .3s ease-in-out; */
 }

@@ -17,12 +17,15 @@
   class="upload-modal" 
   [style.height]="minModalHeight+'px'"
   [style.width]="minModalWidth+'px'"
-
-
   [style.zIndex]="gjZIndex+1">
     <div class="upload-modal-inner-wrapper">
       <div class="upload-modal-header" onselectstart = "return false" >
-        {{gjTitle}}
+        <div [ngSwitch]="true" style="position: absolute;z-index: 100;">
+          <ng-container *ngSwitchCase="isNonEmptyString(gjTitle)">
+            {{gjTitle}}
+          </ng-container>
+          <ng-container *ngSwitchCase="isTemplateRef(gjTitle)" [ngTemplateOutlet]="gjTitle"></ng-container>
+        </div>
         <div 
         *ngIf="useDragHandler" 
         class="drag-handler"
