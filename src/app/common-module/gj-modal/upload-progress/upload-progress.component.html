@@ -11,7 +11,7 @@
   <div class="operate-btns">
     <button (click)="trigger()">
       <ng-container *ngIf="showPause"><span class="iconfont icon-pause"></span></ng-container>
-      <ng-container *ngIf="!showPause">resume</ng-container>
+      <ng-container *ngIf="!showPause"><span class="iconfont icon-play"></span></ng-container>
     </button>
     <button (click)="cancelTask()"><span class="iconfont icon-shanchu"></span></button> 
   </div>
