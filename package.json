@@ -31,7 +31,7 @@
     "rxjs": "~6.4.0",
     "simple-uploader.js": "^0.5.1",
     "siriwave": "^1.2.4",
-    "three": "^0.105.2",
+    "three": "^0.137.0",
     "three-fbxloader-offical": "^1.0.0",
     "three-orbitcontrols": "^2.102.1",
     "tslib": "^1.9.0",
